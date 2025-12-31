@@ -8,54 +8,85 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-emerald-50/30 to-white">
-      <Header />
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Dynamic gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-blue-50" />
+
+      {/* Mesh gradient overlay */}
+      <div
+        className="absolute inset-0 opacity-40"
+        style={{
+          background: `
+            radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.15) 0px, transparent 50%),
+            radial-gradient(at 50% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.12) 0px, transparent 50%),
+            radial-gradient(at 0% 100%, rgba(251, 146, 60, 0.1) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.08) 0px, transparent 50%)
+          `
+        }}
+      />
+
+      {/* Animated gradient orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-gradient-to-br from-emerald-400/20 to-teal-400/20 blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute top-1/3 -right-40 w-96 h-96 rounded-full bg-gradient-to-br from-blue-400/15 to-cyan-400/15 blur-3xl"
+          animate={{
+            x: [0, -80, 0],
+            y: [0, 100, 0],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute -bottom-40 left-1/3 w-96 h-96 rounded-full bg-gradient-to-br from-purple-400/12 to-pink-400/12 blur-3xl"
+          animate={{
+            x: [0, -60, 0],
+            y: [0, -80, 0],
+            scale: [1, 1.15, 1],
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </div>
+
+      {/* Subtle grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.015]"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #000 1px, transparent 1px),
+            linear-gradient(to bottom, #000 1px, transparent 1px)
+          `,
+          backgroundSize: '64px 64px'
+        }}
+      />
+
+      <div className="relative z-10">
+        <Header />
 
       <main>
         {/* Hero Section */}
         <section className="relative overflow-hidden">
-          {/* Animated Background Elements */}
-          <div className="absolute inset-0 -z-10">
-            <motion.div
-              className="absolute top-20 left-1/4 h-96 w-96 rounded-full bg-emerald-100/40 blur-3xl"
-              animate={{
-                x: [0, 50, 0],
-                y: [0, 30, 0],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.div
-              className="absolute bottom-0 right-1/4 h-96 w-96 rounded-full bg-blue-100/30 blur-3xl"
-              animate={{
-                x: [0, -30, 0],
-                y: [0, -50, 0],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.div
-              className="absolute top-1/2 left-1/2 h-64 w-64 rounded-full bg-purple-100/20 blur-3xl"
-              animate={{
-                x: [-100, 100, -100],
-                y: [-50, 50, -50],
-              }}
-              transition={{
-                duration: 15,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          </div>
-
           {/* Floating Icons */}
           <motion.div
             className="absolute top-1/4 left-12 text-emerald-200/40"
@@ -429,6 +460,7 @@ export default function Home() {
           <p>© 2025 NeoMart.ai — Commerce OS Demo</p>
         </div>
       </footer>
+      </div>
     </div>
   );
 }
