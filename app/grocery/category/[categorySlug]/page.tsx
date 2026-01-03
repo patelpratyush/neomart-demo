@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, use } from "react";
-import { Header } from "@/components/nav/header";
+import { TopNav } from "@/components/layout/TopNav";
+import { CategoryStrip } from "@/components/grocery/CategoryStrip";
+import { PageShell } from "@/components/layout/PageShell";
 import { FilterDrawer } from "@/components/filters/filter-drawer";
 import { ProductCardPremium } from "@/components/product/product-card-premium";
 import { FreezerAisle3D } from "@/components/aisle/freezer-aisle-3d";
@@ -48,10 +50,11 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
   const produceProducts = products.filter((p) => p.isProduce);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-gray-50/50 to-white">
-      <Header />
+    <>
+      <TopNav />
+      <CategoryStrip />
 
-      <main className="container mx-auto px-4 py-12 max-w-7xl">
+      <PageShell maxWidth="xl" className="min-h-screen bg-white py-8">
         {/* Minimal Header */}
         <div className="mb-12">
           <h1 className="mb-3 text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-br from-gray-900 to-gray-600 bg-clip-text text-transparent">
@@ -158,7 +161,7 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
             <p className="text-gray-500">No products found.</p>
           </div>
         )}
-      </main>
-    </div>
+      </PageShell>
+    </>
   );
 }

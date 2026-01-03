@@ -1,8 +1,10 @@
 "use client";
 
 import { use } from "react";
-import { Header } from "@/components/nav/header";
-import { ProductCard } from "@/components/product/product-card";
+import { TopNav } from "@/components/layout/TopNav";
+import { CategoryStrip } from "@/components/grocery/CategoryStrip";
+import { PageShell } from "@/components/layout/PageShell";
+import { ProductCard } from "@/components/product/ProductCard";
 import { getCornerBySlug, getProductsByCorner } from "@/lib/data";
 import { Info } from "lucide-react";
 
@@ -30,10 +32,11 @@ export default function CornerPage({
   });
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <>
+      <TopNav />
+      <CategoryStrip />
 
-      <main className="container mx-auto px-4 py-8">
+      <PageShell maxWidth="xl" className="min-h-screen bg-white py-8">
         {/* Corner Header with Watermark */}
         <div className="relative mb-8 overflow-hidden rounded-lg border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 p-8">
           {/* Watermark */}
@@ -83,7 +86,7 @@ export default function CornerPage({
             <p className="text-muted-foreground">No products available in this corner.</p>
           </div>
         )}
-      </main>
-    </div>
+      </PageShell>
+    </>
   );
 }

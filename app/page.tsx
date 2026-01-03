@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { ArrowRight, ShoppingCart, Package, Truck, Sparkles, CheckCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Header } from "@/components/nav/header";
+import { TopNav } from "@/components/layout/TopNav";
 import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <>
+      <TopNav />
+      <div className="min-h-screen relative overflow-hidden">
       {/* Dynamic gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-blue-50" />
 
@@ -82,8 +84,6 @@ export default function Home() {
       />
 
       <div className="relative z-10">
-        <Header />
-
       <main>
         {/* Hero Section */}
         <section className="relative overflow-hidden">
@@ -462,5 +462,6 @@ export default function Home() {
       </footer>
       </div>
     </div>
+    </>
   );
 }
