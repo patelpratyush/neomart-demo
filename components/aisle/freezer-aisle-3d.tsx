@@ -11,8 +11,7 @@ interface FreezerAisle3DProps {
 }
 
 /**
- * Freezer Aisle: Standing in front of freezer doors
- * Features: Glass doors, metal frames, shelves with depth, cold ambiance
+ * Enhanced Freezer Aisle: 3-4 panel freezer doors with glass, handles, and depth
  */
 export function FreezerAisle3D({ products }: FreezerAisle3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,9 +20,9 @@ export function FreezerAisle3D({ products }: FreezerAisle3DProps) {
     offset: ["start start", "end end"],
   });
 
-  // Subtle parallax for glass reflection
-  const glassY = useTransform(scrollYProgress, [0, 1], [0, 40]);
-  const reflectionOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.4, 0.6, 0.4]);
+  // Parallax for glass reflections
+  const glassY = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const reflectionOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.5, 0.3]);
 
   // Group products by section
   const productsBySection: Record<string, Product[]> = {};
@@ -34,122 +33,155 @@ export function FreezerAisle3D({ products }: FreezerAisle3DProps) {
     productsBySection[product.section].push(product);
   });
 
+  const numPanels = 4;
+
   return (
-    <div ref={containerRef} className="relative min-h-screen py-12">
+    <div ref={containerRef} className="relative min-h-screen py-12 bg-gradient-to-b from-slate-50 to-white">
       {/* Perspective Container */}
       <div
-        className="relative mx-auto max-w-7xl"
+        className="relative mx-auto max-w-7xl px-4"
         style={{
-          perspective: "1200px",
-          perspectiveOrigin: "50% 40%",
+          perspective: "1400px",
+          perspectiveOrigin: "50% 35%",
         }}
       >
-        {/* Freezer Wall Container */}
-        <div
-          className="relative rounded-2xl"
-          style={{
-            transform: "rotateY(-1deg)",
-            transformStyle: "preserve-3d",
-          }}
-        >
-          {/* Freezer Door Frame - Full Height */}
-          <div className="relative overflow-hidden rounded-2xl border-8 border-neutral-400 bg-gradient-to-b from-neutral-100 to-neutral-200 shadow-2xl">
-            {/* Metal Frame Top */}
-            <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-neutral-400 to-neutral-300 border-b-2 border-neutral-500" />
+        {Object.entries(productsBySection).map(([section, sectionProducts], sectionIdx) => (
+          <motion.div
+            key={section}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: sectionIdx * 0.1 }}
+            className="mb-20"
+          >
+            {/* Section Label */}
+            <div className="text-center mb-8">
+              <h3 className="text-2xl font-bold text-slate-800 mb-2">{section}</h3>
+              <div className="h-1 w-20 bg-cyan-500 mx-auto rounded-full" />
+            </div>
 
-            {/* Metal Frame Bottom */}
-            <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-neutral-400 to-neutral-300 border-t-2 border-neutral-500" />
-
-            {/* Vertical Handle - Right Side */}
+            {/* Multi-Panel Freezer Doors */}
             <div
-              className="absolute right-8 top-20 bottom-20 z-30 w-6 rounded-full bg-gradient-to-r from-neutral-500 via-neutral-400 to-neutral-500 shadow-lg"
+              className="relative rounded-xl overflow-hidden"
               style={{
-                transform: "translateZ(30px)",
+                transformStyle: "preserve-3d",
+                transform: "rotateX(3deg) rotateY(-2deg)",
               }}
-            />
-
-            {/* Glass Overlay - Full Height */}
-            <motion.div
-              style={{ y: glassY, opacity: reflectionOpacity }}
-              className="pointer-events-none absolute inset-0 z-20"
             >
-              {/* Glass tint */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-cyan-50/20 to-blue-50/30" />
+              {/* Top Metal Frame */}
+              <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-slate-400 via-slate-300 to-slate-400 border-b-2 border-slate-500 shadow-lg z-30" />
 
-              {/* Reflection streaks */}
-              <div
-                className="absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(160deg, rgba(255,255,255,0.5) 0%, transparent 25%, transparent 75%, rgba(255,255,255,0.3) 100%)",
-                }}
-              />
-            </motion.div>
+              {/* Bottom Metal Frame */}
+              <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-slate-400 via-slate-300 to-slate-400 border-t-2 border-slate-500 shadow-lg z-30" />
 
-            {/* Interior Back Wall Shadow */}
-            <div
-              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-black/5 to-black/15"
-              style={{
-                transform: "translateZ(-30px)",
-              }}
-            />
-
-            {/* Shelves Container with Padding */}
-            <div className="relative px-12 py-20 space-y-16">
-              {Object.entries(productsBySection).map(([section, sectionProducts]) => (
-                <div key={section} className="relative">
-                  {/* Shelf Structure with 3D Depth */}
+              {/* Freezer Panels Grid */}
+              <div className="relative grid grid-cols-4 gap-1 bg-slate-300 p-1">
+                {Array.from({ length: numPanels }).map((_, panelIdx) => (
                   <div
-                    className="relative"
+                    key={panelIdx}
+                    className="relative bg-gradient-to-br from-cyan-50/90 to-blue-50/80 border-2 border-slate-300 min-h-[500px]"
                     style={{
                       transformStyle: "preserve-3d",
                     }}
                   >
-                    {/* Shelf Top Surface */}
-                    <div
-                      className="absolute inset-x-0 -top-6 h-4 rounded-sm bg-gradient-to-b from-neutral-300 to-neutral-400 shadow-md"
+                    {/* Glass Effect */}
+                    <motion.div
                       style={{
-                        transform: "translateZ(12px) rotateX(-78deg)",
-                        transformOrigin: "top",
+                        y: glassY,
+                        opacity: reflectionOpacity,
+                      }}
+                      className="absolute inset-0 pointer-events-none z-20"
+                    >
+                      {/* Glass tint */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/20 via-blue-50/10 to-cyan-50/15" />
+
+                      {/* Reflection highlight */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-white/20" />
+
+                      {/* Condensation vignette */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5" />
+                    </motion.div>
+
+                    {/* Vertical Handle */}
+                    <div
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-28 bg-gradient-to-r from-slate-400 via-slate-300 to-slate-400 rounded-full shadow-xl z-30"
+                      style={{
+                        transform: "translateX(-50%) translateY(-50%) translateZ(35px)",
                       }}
                     />
 
-                    {/* Shelf Front Lip */}
-                    <div className="absolute inset-x-0 -top-6 h-2 bg-neutral-400 rounded-sm shadow-sm" />
+                    {/* Interior Light Strip */}
+                    <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-b from-cyan-200/40 to-transparent" />
 
-                    {/* Shelf Shadow Below */}
-                    <div className="absolute inset-x-0 -top-4 h-8 bg-gradient-to-b from-black/20 to-transparent" />
-
-                    {/* Horizontal Scrolling Products */}
-                    <div
-                      className="relative z-10"
-                      style={{
-                        transformStyle: "preserve-3d",
-                      }}
-                    >
-                      <AisleShelfRow label={section}>
-                        {sectionProducts.map((product) => (
-                          <AisleProductPack
-                            key={product.id}
-                            product={product}
-                            variant="frozen"
-                          />
-                        ))}
-                      </AisleShelfRow>
-                    </div>
+                    {/* Panel Divider Line (right edge) */}
+                    {panelIdx < numPanels - 1 && (
+                      <div className="absolute top-0 bottom-0 right-0 w-1 bg-slate-400 shadow-md" />
+                    )}
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Frost Effect at Bottom */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-12 h-32 bg-gradient-to-t from-blue-200/40 to-transparent" />
-          </div>
+              {/* Shelves behind glass */}
+              <div
+                className="absolute inset-x-0 top-16 bottom-16 px-8"
+                style={{
+                  transformStyle: "preserve-3d",
+                  transform: "translateZ(-40px)",
+                }}
+              >
+                {/* Shelf structure */}
+                <div className="relative" style={{ transformStyle: "preserve-3d" }}>
+                  {/* Shelf surface */}
+                  <div
+                    className="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-slate-600 via-slate-500 to-slate-600 rounded shadow-lg"
+                    style={{
+                      transform: "rotateX(-80deg) translateZ(15px)",
+                      transformOrigin: "top",
+                    }}
+                  />
+
+                  {/* Shelf front lip */}
+                  <div className="absolute inset-x-0 top-0 h-2 bg-slate-500 rounded-sm shadow-md" />
+
+                  {/* Products on shelf */}
+                  <div className="relative mt-6" style={{ transformStyle: "preserve-3d" }}>
+                    <AisleShelfRow>
+                      {sectionProducts.map((product) => (
+                        <div
+                          key={product.id}
+                          style={{
+                            transform: "translateZ(25px) rotateX(3deg)",
+                            transformStyle: "preserve-3d",
+                          }}
+                        >
+                          <AisleProductPack product={product} variant="frozen" />
+                        </div>
+                      ))}
+                    </AisleShelfRow>
+                  </div>
+
+                  {/* Shadow falloff */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent pointer-events-none" />
+                </div>
+              </div>
+
+              {/* Frost effect at bottom */}
+              <div className="absolute inset-x-0 bottom-8 h-24 bg-gradient-to-t from-cyan-100/30 to-transparent pointer-events-none" />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Temperature indicator */}
+      <div className="fixed top-20 right-8 bg-cyan-900/90 backdrop-blur-sm border-2 border-cyan-400/50 rounded-lg px-4 py-2 shadow-xl z-50">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+          <span className="text-sm text-cyan-100 font-bold">-18°C</span>
         </div>
       </div>
 
-      {/* Cold Ambient Background */}
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-blue-50/40 via-cyan-50/20 to-white" />
+      {/* Cool ambient background */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-cyan-50/30 via-blue-50/20 to-white pointer-events-none" />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { TopNav } from "@/components/layout/TopNav";
 import { CategoryStrip } from "@/components/grocery/CategoryStrip";
 import { PageShell } from "@/components/layout/PageShell";
 import { FilterDrawer } from "@/components/filters/filter-drawer";
-import { ProductCardPremium } from "@/components/product/product-card-premium";
+import { ProductCard } from "@/components/product/ProductCard";
 import { FreezerAisle3D } from "@/components/aisle/freezer-aisle-3d";
 import { ProduceBins3D } from "@/components/aisle/produce-bins-3d";
 import { FreshDailyAisle3D } from "@/components/aisle/fresh-daily-aisle-3d";
@@ -150,7 +150,7 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
               className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             >
               {products.map((product) => (
-                <ProductCardPremium key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} />
               ))}
             </motion.div>
           )}
