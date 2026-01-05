@@ -40,6 +40,23 @@ export function ProductCard({ product, showBestChoice = false }: ProductCardProp
     }
   };
 
+  const getSourceLabel = () => {
+    switch (product.source) {
+      case "neomart":
+        return "NeoMart";
+      case "patel":
+        return "Patel Brothers";
+      case "shoprite":
+        return "ShopRite";
+      case "hmart":
+        return "H-Mart";
+      case "local":
+        return "Local";
+      default:
+        return product.source;
+    }
+  };
+
   const discount = product.rank <= 3 ? 10 + product.rank * 5 : 0;
 
   return (
@@ -69,7 +86,7 @@ export function ProductCard({ product, showBestChoice = false }: ProductCardProp
       {/* Source Badge */}
       <div className="flex items-center justify-between mb-2">
         <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${getSourceColor()}`}>
-          {product.source === "neomart" ? "NeoMart" : product.source}
+          {getSourceLabel()}
         </span>
       </div>
 

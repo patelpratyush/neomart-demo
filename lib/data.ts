@@ -58,7 +58,7 @@ export const corners: Corner[] = [
     name: "Patel Brothers Corner",
     categorySlug: "south-asian",
     description: "Curated South Asian essentials",
-    badge: "Patel",
+    badge: "Patel Brothers",
     sections: [
       "Lentils & Pulses",
       "Rice & Grains",

@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 const modes = [
   { slug: "grocery", name: "Grocery", href: "/grocery", active: true },
   { slug: "cafe", name: "Café", href: "/cafe", active: false },
+  { slug: "restaurants", name: "Restaurants", href: "/restaurants", active: false },
   { slug: "pharmacy", name: "Pharmacy", href: "#", active: false },
   { slug: "services", name: "Services", href: "#", active: false },
 ];
