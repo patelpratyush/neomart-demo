@@ -103,6 +103,7 @@ export const products: Product[] = [
     isProduce: true,
     aiPairingText: "Great for frying or baking",
     description: "Fresh plantains for cooking",
+    image: "/products/plantains.png",
   },
   {
     id: "p003",
@@ -118,6 +119,7 @@ export const products: Product[] = [
     isProduce: true,
     aiPairingText: "Pair with lime and salt for guacamole",
     description: "Ripe Hass avocados",
+    image: "/products/avocados.png",
   },
   {
     id: "p004",
@@ -133,6 +135,7 @@ export const products: Product[] = [
     isProduce: true,
     aiPairingText: "Essential for curries and salads",
     description: "Fresh red onions",
+    image: "/products/red_onion.png",
   },
   {
     id: "p005",
@@ -148,6 +151,7 @@ export const products: Product[] = [
     isProduce: true,
     aiPairingText: "Perfect for sauces and salsas",
     description: "Fresh Roma tomatoes",
+    image: "/products/roma_tomatoes.png",
   },
   {
     id: "p006",
@@ -179,6 +183,7 @@ export const products: Product[] = [
     isProduce: true,
     aiPairingText: "Great for salads and raita",
     description: "Seedless English cucumbers",
+    image: "/products/english_cucumbers.png",
   },
   {
     id: "p008",
@@ -355,6 +360,7 @@ export const products: Product[] = [
     isFrozen: true,
     aiPairingText: "Heat and serve with curry or pickle",
     description: "Authentic frozen plain parathas",
+    image: "/products/kawan_plain_paratha.png",
   },
   {
     id: "f002",
