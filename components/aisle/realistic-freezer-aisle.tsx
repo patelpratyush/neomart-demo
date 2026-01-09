@@ -13,28 +13,6 @@ interface RealisticFreezerAisleProps {
   products: Product[];
 }
 
-// SWAD Logo Component
-function SwadLogo() {
-  return (
-    <div className="relative bg-gradient-to-b from-orange-50 to-white rounded-2xl px-8 py-4 border-2 border-orange-400 shadow-lg">
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider whitespace-nowrap">
-        Best Taste in Town
-      </div>
-      <div className="mt-2 flex items-center gap-2">
-        <span className="text-orange-400 text-lg">❧</span>
-        <span className="text-4xl font-black tracking-tight" style={{ 
-          color: '#c41e3a',
-          textShadow: '1px 1px 0 #8b0000',
-          fontFamily: 'Georgia, serif'
-        }}>
-          SWAD
-        </span>
-        <span className="text-orange-400 text-lg rotate-180">❧</span>
-      </div>
-      <div className="mt-1 h-1 bg-gradient-to-r from-transparent via-orange-400 to-transparent rounded-full" />
-    </div>
-  );
-}
 
 // Freezer product card
 function FreezerProduct({ product, index }: { product: Product; index: number }) {
@@ -248,10 +226,9 @@ export function RealisticFreezerAisle({ products }: RealisticFreezerAisleProps) 
 
       <div className="container mx-auto px-4 max-w-6xl">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
-          <div className="flex justify-center mb-4"><SwadLogo /></div>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-cyan-100 rounded-full mb-4">
             <Snowflake className="w-4 h-4 text-cyan-600" />
-            <span className="text-sm font-medium text-cyan-800">Frozen Section • Patel Brothers</span>
+            <span className="text-sm font-medium text-cyan-800">Frozen Section • NeoMart</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-slate-800 font-display">Indian Frozen Foods</h2>
           <p className="text-slate-600 mt-2">Scroll shelves to browse • Tap to clear frost</p>

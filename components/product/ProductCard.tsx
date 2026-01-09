@@ -52,39 +52,25 @@ export function ProductCard({ product, showBestChoice = false }: ProductCardProp
   const getSourceConfig = () => {
     switch (product.source) {
       case "neomart":
-        return { 
-          label: "NeoMart", 
-          bg: "bg-primary/10", 
+        return {
+          label: "NeoMart",
+          bg: "bg-primary/10",
           text: "text-primary",
           dot: "bg-primary"
         };
-      case "patel":
-        return { 
-          label: "Patel Brothers", 
-          bg: "bg-orange-50", 
-          text: "text-orange-700",
-          dot: "bg-orange-500"
-        };
-      case "shoprite":
-        return { 
-          label: "ShopRite", 
-          bg: "bg-red-50", 
-          text: "text-red-700",
-          dot: "bg-red-500"
-        };
-      case "hmart":
-        return { 
-          label: "H-Mart", 
-          bg: "bg-indigo-50", 
-          text: "text-indigo-700",
-          dot: "bg-indigo-500"
-        };
-      default:
-        return { 
-          label: "Local", 
-          bg: "bg-muted", 
+      case "local":
+        return {
+          label: "Local",
+          bg: "bg-muted",
           text: "text-muted-foreground",
           dot: "bg-muted-foreground"
+        };
+      default:
+        return {
+          label: "NeoMart",
+          bg: "bg-primary/10",
+          text: "text-primary",
+          dot: "bg-primary"
         };
     }
   };
@@ -115,13 +101,22 @@ export function ProductCard({ product, showBestChoice = false }: ProductCardProp
 
       {/* Product Image Area */}
       <div className="relative aspect-square bg-gradient-to-br from-secondary/50 to-muted/30 flex items-center justify-center overflow-hidden">
-        <motion.span 
-          className="text-6xl transition-transform duration-300 group-hover:scale-110"
-          whileHover={{ rotate: [-5, 5, 0], transition: { duration: 0.3 } }}
-        >
-          {getProductEmoji()}
-        </motion.span>
-        
+        {product.image ? (
+          <motion.img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-contain p-2 transition-transform duration-300 group-hover:scale-110"
+            whileHover={{ scale: 1.15, transition: { duration: 0.3 } }}
+          />
+        ) : (
+          <motion.span
+            className="text-6xl transition-transform duration-300 group-hover:scale-110"
+            whileHover={{ rotate: [-5, 5, 0], transition: { duration: 0.3 } }}
+          >
+            {getProductEmoji()}
+          </motion.span>
+        )}
+
         {/* Hover overlay with quick add */}
         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-300" />
       </div>

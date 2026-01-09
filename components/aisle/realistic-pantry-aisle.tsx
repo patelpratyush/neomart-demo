@@ -13,28 +13,6 @@ interface RealisticPantryAisleProps {
   products: Product[];
 }
 
-// SWAD Logo for pantry items
-function SwadBadge({ small = false }: { small?: boolean }) {
-  if (small) {
-    return (
-      <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-orange-100 rounded border border-orange-300">
-        <span className="text-[10px] font-bold text-red-700" style={{ fontFamily: 'Georgia, serif' }}>SWAD</span>
-      </div>
-    );
-  }
-  return (
-    <div className="relative bg-gradient-to-b from-orange-50 to-white rounded-xl px-6 py-3 border-2 border-orange-400 shadow-lg">
-      <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[9px] font-bold px-3 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap">
-        Best Taste in Town
-      </div>
-      <div className="mt-1 flex items-center gap-1">
-        <span className="text-orange-400 text-sm">❧</span>
-        <span className="text-2xl font-black tracking-tight" style={{ color: '#c41e3a', fontFamily: 'Georgia, serif' }}>SWAD</span>
-        <span className="text-orange-400 text-sm rotate-180">❧</span>
-      </div>
-    </div>
-  );
-}
 
 // Pantry product on metal shelf
 function PantryProduct({ product, index }: { product: Product; index: number }) {
@@ -119,13 +97,8 @@ function PantryProduct({ product, index }: { product: Product; index: number }) 
         <div className={`relative ${getPackageStyle()} overflow-hidden border-2 border-amber-300 bg-gradient-to-br ${visual.bg} shadow-lg`}>
           {/* Package shine */}
           <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none" />
-          
-          {/* Label design */}
-          <div className="absolute top-0 inset-x-0 h-6 bg-gradient-to-r from-red-600 via-red-500 to-red-600 flex items-center justify-center">
-            <span className="text-[8px] font-bold text-white tracking-wider">SWAD BRAND</span>
-          </div>
 
-          <div className="relative p-2.5 pt-8">
+          <div className="relative p-2.5">
             {/* Product emoji */}
             <div className="flex items-center justify-center h-14 sm:h-16 mb-2">
               <motion.span 
@@ -309,12 +282,9 @@ export function RealisticPantryAisle({ products }: RealisticPantryAisleProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-10"
         >
-          <div className="flex justify-center mb-4">
-            <SwadBadge />
-          </div>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 rounded-full mb-4 border border-orange-300">
             <Package className="w-4 h-4 text-orange-600" />
-            <span className="text-sm font-medium text-orange-800">South Asian Essentials • Patel Brothers</span>
+            <span className="text-sm font-medium text-orange-800">South Asian Essentials • NeoMart</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 font-display">
             Pantry Staples

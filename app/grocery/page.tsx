@@ -202,16 +202,18 @@ export default function GroceryPage() {
               </Link>
             </motion.div>
 
-            <div className="grid gap-5 md:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-1">
               {corners.map((corner, idx) => {
-                const config = cornerConfig[corner.slug] || cornerConfig["patel-brothers"];
-                
+                const config = cornerConfig[corner.slug];
+
+                if (!config) return null;
+
                 return (
                   <motion.div key={corner.slug} variants={itemVariants}>
                     <Link href={`/grocery/category/${corner.categorySlug}/corner/${corner.slug}`}>
                       <div className="group relative overflow-hidden rounded-2xl bg-card border border-border/50 transition-all duration-300 hover:border-border hover:shadow-xl hover:-translate-y-1 corner-card-glow">
                         {/* Background pattern */}
-                        <div 
+                        <div
                           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                           style={{ background: config.pattern }}
                         />

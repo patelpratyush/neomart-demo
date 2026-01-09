@@ -1,4 +1,4 @@
-export type Source = "neomart" | "patel" | "shoprite" | "hmart" | "local";
+export type Source = "neomart" | "local";
 
 export type DietaryTag = "veg" | "vegan" | "halal" | "gluten-free" | "organic";
 
@@ -19,6 +19,7 @@ export interface Product {
   aiPairingText?: string;
   aiSubstituteIds?: string[];
   description?: string;
+  image?: string;
 }
 
 export interface Category {

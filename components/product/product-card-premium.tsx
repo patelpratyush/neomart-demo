@@ -33,11 +33,19 @@ export function ProductCardPremium({ product }: ProductCardPremiumProps) {
         className="group h-full"
       >
         <div className="h-full overflow-hidden rounded-lg border border-border/50 bg-white transition-all duration-200 hover:border-border hover:shadow-md">
-          {/* Image Placeholder */}
+          {/* Product Image */}
           <div className="relative aspect-square w-full overflow-hidden bg-neutral-50">
-            <div className="flex h-full items-center justify-center">
-              <div className="h-24 w-24 rounded-full bg-neutral-100" />
-            </div>
+            {product.image ? (
+              <img
+                src={product.image}
+                alt={product.name}
+                className="h-full w-full object-contain p-4"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <div className="h-24 w-24 rounded-full bg-neutral-100" />
+              </div>
+            )}
             {/* Source Badge - Top Right */}
             <div className="absolute right-2 top-2">
               <SourceBadge source={product.source} className="text-xs shadow-sm" />
