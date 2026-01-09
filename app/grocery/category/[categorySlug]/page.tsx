@@ -6,14 +6,14 @@ import { CategoryStrip } from "@/components/grocery/CategoryStrip";
 import { PageShell } from "@/components/layout/PageShell";
 import { FilterDrawer } from "@/components/filters/filter-drawer";
 import { ProductCard } from "@/components/product/ProductCard";
-import { FreezerAisle3D } from "@/components/aisle/freezer-aisle-3d";
-import { ProduceBins3D } from "@/components/aisle/produce-bins-3d";
-import { FreshDailyAisle3D } from "@/components/aisle/fresh-daily-aisle-3d";
+import { RealisticFreezerAisle } from "@/components/aisle/realistic-freezer-aisle";
+import { RealisticProduceAisle } from "@/components/aisle/realistic-produce-aisle";
+import { RealisticPantryAisle } from "@/components/aisle/realistic-pantry-aisle";
 import { getCategoryBySlug, getProductsByCategory, getProductsBySection } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Grid, LayoutList, Search } from "lucide-react";
+import { Grid, Snowflake, Leaf, Package, Store } from "lucide-react";
 
 export default function CategoryPage({ params }: { params: Promise<{ categorySlug: string }> }) {
   const resolvedParams = use(params);
@@ -29,23 +29,44 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
     ? getProductsBySection(category.slug, selectedSection)
     : getProductsByCategory(category.slug);
 
-  // Determine if we should show aisle view
-  const showFrozenAisle =
-    viewMode === "aisle" &&
-    category.slug === "ready-to-cook" &&
-    products.some((p) => p.isFrozen);
+  // Determine aisle view type based on category
+  const getAisleConfig = () => {
+    switch (category.slug) {
+      case "ready-to-cook":
+        return {
+          icon: <Snowflake className="h-4 w-4" />,
+          label: "Freezer",
+          color: "bg-cyan-600 hover:bg-cyan-700",
+          component: "freezer"
+        };
+      case "fresh-daily":
+        return {
+          icon: <Leaf className="h-4 w-4" />,
+          label: "Market",
+          color: "bg-green-600 hover:bg-green-700",
+          component: "produce"
+        };
+      case "south-asian":
+        return {
+          icon: <Package className="h-4 w-4" />,
+          label: "Pantry",
+          color: "bg-orange-600 hover:bg-orange-700",
+          component: "pantry"
+        };
+      default:
+        return {
+          icon: <Store className="h-4 w-4" />,
+          label: "Aisle",
+          color: "bg-primary hover:bg-primary/90",
+          component: "default"
+        };
+    }
+  };
 
-  const showProduceAisle =
-    viewMode === "aisle" &&
-    category.slug === "fresh-daily" &&
-    selectedSection === "Produce" &&
-    products.some((p) => p.isProduce);
+  const aisleConfig = getAisleConfig();
+  const showAisleView = viewMode === "aisle" && products.length > 0;
 
-  const showFreshDailyAisle =
-    viewMode === "aisle" &&
-    category.slug === "fresh-daily" &&
-    !selectedSection;
-
+  // Filter products for specific aisle types
   const frozenProducts = products.filter((p) => p.isFrozen);
   const produceProducts = products.filter((p) => p.isProduce);
 
@@ -55,9 +76,9 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
       <CategoryStrip />
 
       <PageShell maxWidth="xl" className="min-h-screen bg-white py-8">
-        {/* Minimal Header */}
+        {/* Header */}
         <div className="mb-12">
-          <h1 className="mb-3 text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-br from-gray-900 to-gray-600 bg-clip-text text-transparent">
+          <h1 className="mb-3 text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-br from-gray-900 to-gray-600 bg-clip-text text-transparent font-display">
             {category.name}
           </h1>
           <p className="text-gray-600">
@@ -65,14 +86,13 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
           </p>
         </div>
 
-        {/* Minimal Controls Bar */}
+        {/* Controls Bar */}
         <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
           {/* Search */}
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input
               placeholder="Search products..."
-              className="pl-9 border-gray-200 bg-white shadow-sm"
+              className="pl-4 border-gray-200 bg-white shadow-sm"
             />
           </div>
 
@@ -92,14 +112,14 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
                 variant={viewMode === "aisle" ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setViewMode("aisle")}
-                className="h-9 px-3 md:px-4 rounded-lg"
+                className={`h-9 px-3 md:px-4 rounded-lg ${viewMode === "aisle" ? aisleConfig.color : ""}`}
               >
-                <LayoutList className="h-4 w-4 md:mr-1.5" />
-                <span className="hidden md:inline">Aisle</span>
+                {aisleConfig.icon}
+                <span className="hidden md:inline ml-1.5">{aisleConfig.label}</span>
               </Button>
             </div>
 
-            {/* Filters Drawer */}
+            {/* Filters */}
             <FilterDrawer
               sections={category.sections}
               selectedSection={selectedSection}
@@ -110,27 +130,17 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
 
         {/* Product Area */}
         <AnimatePresence mode="wait">
-          {showFrozenAisle ? (
+          {showAisleView && aisleConfig.component === "freezer" && frozenProducts.length > 0 ? (
             <motion.div
-              key="frozen-aisle"
+              key="freezer-aisle"
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.3 }}
             >
-              <FreezerAisle3D products={frozenProducts} />
+              <RealisticFreezerAisle products={frozenProducts} />
             </motion.div>
-          ) : showFreshDailyAisle ? (
-            <motion.div
-              key="fresh-daily-aisle"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.3 }}
-            >
-              <FreshDailyAisle3D products={products} />
-            </motion.div>
-          ) : showProduceAisle ? (
+          ) : showAisleView && aisleConfig.component === "produce" ? (
             <motion.div
               key="produce-aisle"
               initial={{ opacity: 0, scale: 0.98 }}
@@ -138,7 +148,17 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ duration: 0.3 }}
             >
-              <ProduceBins3D products={produceProducts} />
+              <RealisticProduceAisle products={produceProducts.length > 0 ? produceProducts : products} />
+            </motion.div>
+          ) : showAisleView && aisleConfig.component === "pantry" ? (
+            <motion.div
+              key="pantry-aisle"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.3 }}
+            >
+              <RealisticPantryAisle products={products} />
             </motion.div>
           ) : (
             <motion.div
@@ -147,7 +167,7 @@ export default function CategoryPage({ params }: { params: Promise<{ categorySlu
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
             >
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
