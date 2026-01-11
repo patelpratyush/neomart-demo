@@ -377,6 +377,7 @@ export const products: Product[] = [
     isFrozen: true,
     aiPairingText: "Serve with yogurt and pickle",
     description: "Potato-stuffed parathas",
+    image: "/products/frozen_aloo_paratha.png",
   },
   {
     id: "f003",

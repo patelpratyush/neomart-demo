@@ -95,15 +95,25 @@ function ProduceItem({ product, index }: { product: Product; index: number }) {
                 <Droplets className="w-3 h-3" />
               </div>
 
-              {/* Produce emoji */}
+              {/* Produce visual */}
               <div className="flex items-center justify-center h-16 sm:h-20 mb-2">
-                <motion.span 
-                  className="text-5xl sm:text-6xl drop-shadow-lg"
-                  animate={isHovered ? { rotate: [0, -10, 10, 0], scale: [1, 1.1, 1] } : {}}
-                  transition={{ duration: 0.4 }}
-                >
-                  {visual.emoji}
-                </motion.span>
+                {product.image ? (
+                  <motion.img
+                    src={product.image}
+                    alt={product.name}
+                    className="h-full w-full object-contain drop-shadow-lg"
+                    animate={isHovered ? { scale: [1, 1.1, 1] } : {}}
+                    transition={{ duration: 0.4 }}
+                  />
+                ) : (
+                  <motion.span 
+                    className="text-5xl sm:text-6xl drop-shadow-lg"
+                    animate={isHovered ? { rotate: [0, -10, 10, 0], scale: [1, 1.1, 1] } : {}}
+                    transition={{ duration: 0.4 }}
+                  >
+                    {visual.emoji}
+                  </motion.span>
+                )}
               </div>
 
               {/* Product info card */}

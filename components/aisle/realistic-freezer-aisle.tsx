@@ -64,9 +64,18 @@ function FreezerProduct({ product, index }: { product: Product; index: number })
           }} />
           <div className="relative p-2.5">
             <div className="flex items-center justify-center h-14 sm:h-16 mb-2">
-              <motion.span className="text-4xl sm:text-5xl drop-shadow-md" animate={isHovered ? { rotate: [0, -5, 5, 0] } : {}}>
-                {visual.emoji}
-              </motion.span>
+              {product.image ? (
+                <motion.img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full w-full object-contain drop-shadow-md"
+                  animate={isHovered ? { scale: [1, 1.1, 1] } : {}}
+                />
+              ) : (
+                <motion.span className="text-4xl sm:text-5xl drop-shadow-md" animate={isHovered ? { rotate: [0, -5, 5, 0] } : {}}>
+                  {visual.emoji}
+                </motion.span>
+              )}
             </div>
             <h3 className="text-[10px] sm:text-xs font-semibold text-gray-800 line-clamp-2 mb-1 min-h-[28px] leading-tight">{product.name}</h3>
             <div className="flex items-baseline gap-1 mb-2">

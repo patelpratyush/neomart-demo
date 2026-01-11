@@ -99,15 +99,25 @@ function PantryProduct({ product, index }: { product: Product; index: number }) 
           <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none" />
 
           <div className="relative p-2.5">
-            {/* Product emoji */}
+            {/* Product visual */}
             <div className="flex items-center justify-center h-14 sm:h-16 mb-2">
-              <motion.span 
-                className="text-4xl sm:text-5xl drop-shadow-md"
-                animate={isHovered ? { rotate: [0, -5, 5, 0], scale: [1, 1.1, 1] } : {}}
-                transition={{ duration: 0.3 }}
-              >
-                {visual.emoji}
-              </motion.span>
+              {product.image ? (
+                <motion.img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full w-full object-contain drop-shadow-md"
+                  animate={isHovered ? { scale: [1, 1.1, 1] } : {}}
+                  transition={{ duration: 0.3 }}
+                />
+              ) : (
+                <motion.span 
+                  className="text-4xl sm:text-5xl drop-shadow-md"
+                  animate={isHovered ? { rotate: [0, -5, 5, 0], scale: [1, 1.1, 1] } : {}}
+                  transition={{ duration: 0.3 }}
+                >
+                  {visual.emoji}
+                </motion.span>
+              )}
             </div>
 
             {/* Product name */}
