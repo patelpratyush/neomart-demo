@@ -111,13 +111,13 @@ export default function GroceryPage() {
                   <span className="text-amber-300">smarter prices</span>
                 </motion.h1>
                 
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                   className="text-white/80 text-lg max-w-md mb-6"
                 >
-                  One cart, multiple sources. We find the best deals across all our partner stores.
+                  One cart. Multiple sources. Smarter prices, handled for you.
                 </motion.p>
                 
                 <motion.div 
@@ -191,7 +191,7 @@ export default function GroceryPage() {
                   Curated Corners
                 </h2>
                 <p className="mt-3 text-muted-foreground">
-                  Partner stores with specialty selections
+                  Specialty-sourced items
                 </p>
               </div>
               <Link href="/grocery/category/south-asian">

@@ -58,6 +58,13 @@ export function ProductCard({ product, showBestChoice = false }: ProductCardProp
           text: "text-primary",
           dot: "bg-primary"
         };
+      case "patel-brothers":
+        return {
+          label: "Patel Brothers",
+          bg: "bg-primary/10",
+          text: "text-primary",
+          dot: "bg-primary"
+        };
       case "local":
         return {
           label: "Local",

@@ -1,4 +1,4 @@
-export type Source = "neomart" | "local";
+export type Source = "neomart" | "patel-brothers" | "local";
 
 export type DietaryTag = "veg" | "vegan" | "halal" | "gluten-free" | "organic";
 

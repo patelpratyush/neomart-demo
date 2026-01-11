@@ -19,18 +19,20 @@ npm run lint         # Run ESLint
 ## Architecture Overview
 
 ### Core Concept: Unified Commerce
-- **Single cart** for products from multiple sources (NeoMart, Patel Brothers, ShopRite, H-Mart, Local)
+- **Single cart** for products from multiple sources (NeoMart and Local)
 - **Corners are NOT separate stores** - they are curated views WITHIN categories
 - All pricing and fulfillment unified under NeoMart brand
-- Smart order routing and fulfillment splitting happens behind the scenes
+- Currently one corner: "NeoMart Grocery" (South Asian essentials)
 
 ### Key Architectural Patterns
 
 #### 1. Data Layer (`/lib`)
-- **`data.ts`**: Mock product catalog with 30+ products across categories
+- **`data.ts`**: Mock product catalog with 75+ products across categories
 - **`types.ts`**: Central TypeScript definitions for Product, Category, Corner, CartItem
-- Products include: `isFrozen`, `isProduce`, `section`, `source`, `dietaryTags`, `pairsWith`, `substitutes`
-- Helper functions: `getCategoryBySlug()`, `getProductsByCategory()`, `getProductsBySection()`
+- Products include: `isFrozen`, `isProduce`, `section`, `source`, `dietaryTags`, `image`, `aiPairingText`, `aiSubstituteIds`
+- Helper functions: `getCategoryBySlug()`, `getProductsByCategory()`, `getProductsBySection()`, `getProductsByCorner()`
+- **Product images**: Stored in `/public/products/` with lowercase, underscore-separated names (e.g., `yellow_banana.png`)
+- **Source types**: Only `"neomart"` and `"local"` - removed third-party sources (Patel Brothers, ShopRite, H-Mart)
 
 #### 2. State Management (`/store`)
 - **Zustand** for global cart state
@@ -49,8 +51,10 @@ npm run lint         # Run ESLint
 - Already responsive: hides search/nav on mobile, shows cart always
 
 **Product Components (`/components/product`)**
-- `ProductCardPremium.tsx`: Minimal grid cards with hover effects
-- `SourceBadge.tsx`: Displays product source (NeoMart, Patel, ShopRite, etc.)
+- `ProductCard.tsx`: Main product card with image support, displays real images or emoji fallbacks
+- `ProductCardPremium.tsx`: Minimal grid cards with hover effects and image support
+- `SourceBadge.tsx`: Displays product source (NeoMart or Local only)
+- **Image Handling**: Products with `image` field show actual product photos; products without images display contextual emojis
 
 **Filter Components (`/components/filters`)**
 - `FilterDrawer.tsx`: Radix Sheet drawer for section filters
@@ -180,7 +184,13 @@ const showProduceAisle = viewMode === "aisle" && category.slug === "fresh-daily"
 - Edit `lib/data.ts` products array
 - Ensure `isFrozen`, `isProduce` flags are set correctly
 - Add `section` for proper grouping in aisle views
-- Include `pairsWith` and `substitutes` for AI features
+- Include `aiPairingText` and `aiSubstituteIds` for AI features
+- **Adding product images**:
+  - Place images in `/public/products/` directory
+  - Use lowercase names with underscores (e.g., `mango_kulfi.png`, `basmati_rice.png`)
+  - Reference in product as `image: "/products/filename.png"`
+  - Images display automatically in `ProductCard` and `ProductCardPremium`
+  - Products without images fall back to emoji placeholders
 
 ### When Adding shadcn/ui Components:
 - Components are in `/components/ui`
@@ -195,8 +205,9 @@ const showProduceAisle = viewMode === "aisle" && category.slug === "fresh-daily"
 ### Performance:
 - 3D transforms are GPU-accelerated (performant)
 - Use `scroll-snap` for smooth horizontal scrolling
-- Lazy load product images when real images are added
+- Product images load directly (no lazy loading currently implemented)
 - Keep perspective values reasonable (1000-2000px range)
+- ~50 products have real images; rest use emoji placeholders
 
 ## Testing Checklist
 
@@ -228,6 +239,8 @@ When making changes, verify:
 4. **Perspective Origin**: Position of vanishing point - typically `50% 40%` for shelf views
 5. **Mobile Detection**: Use `useState` + `useEffect` to avoid SSR mismatches, don't use `window` directly in render
 6. **Corners vs Stores**: Corners are curated views, NOT separate checkout flows - maintain unified cart
+7. **Product Image Paths**: Image filenames in `/public/products/` must be lowercase with underscores, no spaces (e.g., `swad_ghee.png` not `SWAD GHEE.png`)
+8. **Source Types**: Only use `"neomart"` or `"local"` as source values - no third-party sources
 
 ## File References
 
