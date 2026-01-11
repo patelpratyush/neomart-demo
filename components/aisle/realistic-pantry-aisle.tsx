@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Product } from "@/lib/types";
-import { Plus, ChevronLeft, ChevronRight, Package, Sparkles } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight, Package, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/store/cart";
 import { toast } from "@/hooks/use-toast";
@@ -13,9 +13,8 @@ interface RealisticPantryAisleProps {
   products: Product[];
 }
 
-
-// Pantry product on metal shelf
-function PantryProduct({ product, index }: { product: Product; index: number }) {
+// Individual pantry product package
+function PantryPackage({ product, index }: { product: Product; index: number }) {
   const addItem = useCartStore((state) => state.addItem);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -26,57 +25,56 @@ function PantryProduct({ product, index }: { product: Product; index: number }) 
     toast({ title: "Added to cart", description: product.name });
   };
 
-  const getProductVisual = () => {
+  const getPackageDesign = () => {
     const name = product.name.toLowerCase();
     const section = (product.section || "").toLowerCase();
     
-    // Lentils & Pulses
-    if (name.includes("dal") || name.includes("toor") || name.includes("chana") || name.includes("moong") || name.includes("masoor") || name.includes("urad")) {
-      return { emoji: "🫘", bg: "from-amber-200 to-yellow-100", package: "bag" };
+    // Different package styles based on product type
+    if (name.includes("dal") || name.includes("toor") || name.includes("chana") || name.includes("lentil")) {
+      return { gradient: "from-amber-400 via-yellow-300 to-amber-400", shape: "bag", accent: "#D97706" };
     }
-    // Rice & Grains
-    if (name.includes("rice") || name.includes("basmati") || name.includes("poha") || name.includes("rava") || name.includes("sooji")) {
-      return { emoji: "🍚", bg: "from-white to-gray-100", package: "bag" };
+    if (name.includes("rice") || name.includes("basmati") || name.includes("poha")) {
+      return { gradient: "from-white via-gray-100 to-white", shape: "bag", accent: "#059669" };
     }
-    // Spices
-    if (name.includes("turmeric") || name.includes("haldi")) return { emoji: "🌕", bg: "from-yellow-300 to-yellow-200", package: "jar" };
-    if (name.includes("cumin") || name.includes("jeera")) return { emoji: "🌰", bg: "from-amber-300 to-amber-200", package: "jar" };
-    if (name.includes("masala") || name.includes("garam")) return { emoji: "🌶️", bg: "from-red-200 to-orange-100", package: "box" };
-    if (name.includes("coriander") || name.includes("dhania")) return { emoji: "🌿", bg: "from-green-200 to-green-100", package: "jar" };
-    if (name.includes("chili") || name.includes("mirch")) return { emoji: "🌶️", bg: "from-red-300 to-red-200", package: "jar" };
-    if (section.includes("spice")) return { emoji: "✨", bg: "from-orange-200 to-yellow-100", package: "jar" };
-    
-    // Flours
-    if (name.includes("atta") || name.includes("flour") || name.includes("besan") || name.includes("maida")) {
-      return { emoji: "🌾", bg: "from-amber-100 to-yellow-50", package: "bag" };
+    if (name.includes("atta") || name.includes("flour") || name.includes("besan")) {
+      return { gradient: "from-amber-200 via-yellow-100 to-amber-200", shape: "bag", accent: "#B45309" };
     }
-    // Snacks
-    if (name.includes("biscuit") || name.includes("parle")) return { emoji: "🍪", bg: "from-amber-200 to-yellow-100", package: "pack" };
-    if (name.includes("bhujia") || name.includes("namkeen") || name.includes("mixture")) return { emoji: "🥨", bg: "from-orange-200 to-yellow-100", package: "pack" };
-    if (name.includes("chips") || name.includes("papad")) return { emoji: "🥔", bg: "from-yellow-200 to-yellow-100", package: "pack" };
-    // Oils & Ghee
-    if (name.includes("ghee")) return { emoji: "🧈", bg: "from-yellow-200 to-amber-100", package: "jar" };
-    if (name.includes("oil") || name.includes("mustard")) return { emoji: "🫒", bg: "from-yellow-300 to-amber-200", package: "bottle" };
-    // Pickles & Chutneys
-    if (name.includes("pickle") || name.includes("achar")) return { emoji: "🥒", bg: "from-green-200 to-yellow-100", package: "jar" };
-    if (name.includes("chutney")) return { emoji: "🫙", bg: "from-green-200 to-green-100", package: "jar" };
-    
-    return { emoji: "📦", bg: "from-amber-100 to-orange-50", package: "box" };
+    if (name.includes("turmeric") || name.includes("haldi")) {
+      return { gradient: "from-yellow-400 via-yellow-300 to-yellow-400", shape: "jar", accent: "#CA8A04" };
+    }
+    if (name.includes("cumin") || name.includes("masala") || name.includes("spice")) {
+      return { gradient: "from-red-400 via-orange-300 to-red-400", shape: "box", accent: "#DC2626" };
+    }
+    if (name.includes("chili") || name.includes("mirch")) {
+      return { gradient: "from-red-500 via-red-400 to-red-500", shape: "jar", accent: "#B91C1C" };
+    }
+    if (name.includes("oil") || name.includes("ghee")) {
+      return { gradient: "from-yellow-300 via-amber-200 to-yellow-300", shape: "bottle", accent: "#D97706" };
+    }
+    if (name.includes("pickle") || name.includes("chutney")) {
+      return { gradient: "from-green-400 via-lime-300 to-green-400", shape: "jar", accent: "#15803D" };
+    }
+    if (name.includes("biscuit") || name.includes("cookie")) {
+      return { gradient: "from-amber-300 via-yellow-200 to-amber-300", shape: "pack", accent: "#92400E" };
+    }
+    if (name.includes("namkeen") || name.includes("bhujia") || name.includes("chips")) {
+      return { gradient: "from-orange-400 via-yellow-300 to-orange-400", shape: "pack", accent: "#EA580C" };
+    }
+    return { gradient: "from-orange-300 via-amber-200 to-orange-300", shape: "box", accent: "#C2410C" };
   };
 
-  const visual = getProductVisual();
+  const design = getPackageDesign();
 
-  // Package shape based on type
-  const getPackageStyle = () => {
-    switch (visual.package) {
+  const getShapeStyles = () => {
+    switch (design.shape) {
       case "jar":
-        return "rounded-lg";
-      case "bottle":
-        return "rounded-t-full rounded-b-lg";
-      case "bag":
         return "rounded-t-2xl rounded-b-lg";
+      case "bottle":
+        return "rounded-t-full rounded-b-xl";
+      case "bag":
+        return "rounded-t-3xl rounded-b-lg";
       case "pack":
-        return "rounded-lg";
+        return "rounded-xl";
       default:
         return "rounded-lg";
     }
@@ -87,76 +85,131 @@ function PantryProduct({ product, index }: { product: Product; index: number }) 
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: index * 0.03 }}
-        whileHover={{ scale: 1.08, y: -8, zIndex: 20 }}
+        transition={{ delay: index * 0.03, type: "spring", stiffness: 250, damping: 20 }}
+        whileHover={{ y: -10, scale: 1.05, zIndex: 30 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
-        className="relative w-[130px] sm:w-[145px] flex-shrink-0 cursor-pointer"
+        className="relative w-[115px] sm:w-[130px] flex-shrink-0 cursor-pointer group"
+        style={{ perspective: "600px" }}
       >
-        {/* Product package */}
-        <div className={`relative ${getPackageStyle()} overflow-hidden border-2 border-amber-300 bg-gradient-to-br ${visual.bg} shadow-lg`}>
-          {/* Package shine */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent pointer-events-none" />
+        {/* Product package with 3D effect */}
+        <div
+          className="relative"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: isHovered ? "rotateY(-5deg) rotateX(-3deg)" : "rotateY(0deg)",
+            transition: "transform 0.3s ease",
+          }}
+        >
+          {/* Main package */}
+          <div 
+            className={`relative ${getShapeStyles()} overflow-hidden bg-gradient-to-b ${design.gradient}`}
+            style={{
+              boxShadow: isHovered 
+                ? `0 25px 50px -12px rgba(0,0,0,0.4), 0 0 0 2px ${design.accent}40`
+                : "0 10px 25px -8px rgba(0,0,0,0.25)",
+            }}
+          >
+            {/* Package shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent pointer-events-none" />
+            
+            {/* Subtle pattern overlay */}
+            <div className="absolute inset-0 opacity-10" style={{
+              backgroundImage: `repeating-linear-gradient(45deg, transparent 0px, transparent 10px, rgba(0,0,0,0.05) 10px, rgba(0,0,0,0.05) 12px)`,
+            }} />
 
-          <div className="relative p-2.5">
-            {/* Product visual */}
-            <div className="flex items-center justify-center h-14 sm:h-16 mb-2">
-              {product.image ? (
-                <motion.img
-                  src={product.image}
-                  alt={product.name}
-                  className="h-full w-full object-contain drop-shadow-md"
-                  animate={isHovered ? { scale: [1, 1.1, 1] } : {}}
-                  transition={{ duration: 0.3 }}
-                />
-              ) : (
-                <motion.span 
-                  className="text-4xl sm:text-5xl drop-shadow-md"
-                  animate={isHovered ? { rotate: [0, -5, 5, 0], scale: [1, 1.1, 1] } : {}}
-                  transition={{ duration: 0.3 }}
-                >
-                  {visual.emoji}
-                </motion.span>
-              )}
-            </div>
+            <div className="relative p-2.5">
+              {/* Brand accent stripe */}
+              <div 
+                className="absolute top-0 left-0 right-0 h-2"
+                style={{ backgroundColor: design.accent }}
+              />
 
-            {/* Product name */}
-            <h3 className="text-[10px] sm:text-xs font-semibold text-gray-800 line-clamp-2 mb-1 min-h-[28px] leading-tight text-center">
-              {product.name}
-            </h3>
-
-            {/* Weight/Size badge */}
-            <div className="flex justify-center mb-2">
-              <span className="text-[9px] px-2 py-0.5 bg-amber-200 rounded text-amber-800 font-medium">
-                {product.unit}
-              </span>
-            </div>
-
-            {/* Price and Add button */}
-            <div className="bg-white/80 rounded-lg p-2">
-              <div className="flex items-baseline justify-center gap-1 mb-2">
-                <span className="text-sm font-bold text-green-700">${product.price.toFixed(2)}</span>
+              {/* Product image area */}
+              <div className="relative h-16 sm:h-20 mt-2 mb-2 rounded-lg overflow-hidden bg-white/60 backdrop-blur-sm flex items-center justify-center">
+                {product.image ? (
+                  <motion.img
+                    src={product.image}
+                    alt={product.name}
+                    className="h-full w-full object-contain p-1.5 drop-shadow-md"
+                    animate={isHovered ? { scale: 1.1 } : { scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                ) : (
+                  <motion.div
+                    className="text-4xl drop-shadow-md"
+                    animate={isHovered ? { rotate: [0, -5, 5, 0] } : {}}
+                  >
+                    📦
+                  </motion.div>
+                )}
               </div>
-              <Button
-                onClick={handleAddToCart}
-                size="sm"
-                className="w-full h-7 text-[10px] bg-orange-500 hover:bg-orange-600 text-white"
+
+              {/* Product info */}
+              <div className="bg-white/90 rounded-lg p-2 shadow-sm">
+                <h3 className="text-[9px] sm:text-[10px] font-bold text-gray-800 line-clamp-2 leading-tight min-h-[24px] mb-1">
+                  {product.name}
+                </h3>
+                
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-sm font-bold" style={{ color: design.accent }}>
+                    ${product.price.toFixed(2)}
+                  </span>
+                  <span className="text-[8px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">
+                    {product.unit}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom brand bar */}
+            <div 
+              className="h-2"
+              style={{ backgroundColor: design.accent, opacity: 0.8 }}
+            />
+          </div>
+
+          {/* 3D side effect */}
+          <div 
+            className="absolute top-0 -right-1.5 w-3 h-full rounded-r"
+            style={{
+              background: `linear-gradient(90deg, ${design.accent}60 0%, ${design.accent}30 100%)`,
+              transform: "rotateY(75deg)",
+              transformOrigin: "left",
+            }}
+          />
+
+          {/* Shadow on shelf */}
+          <div className="absolute -bottom-2 left-1 right-1 h-4 bg-black/25 blur-md rounded-full" />
+        </div>
+
+        {/* Add to cart button on hover */}
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 5 }}
+              className="absolute -bottom-1 left-0 right-0 z-40"
+            >
+              <Button 
+                onClick={handleAddToCart} 
+                size="sm" 
+                className="w-full h-7 text-[10px] text-white shadow-lg rounded-t-none font-semibold"
+                style={{ backgroundColor: design.accent }}
               >
                 <Plus className="h-3 w-3 mr-1" />Add
               </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Shadow */}
-        <div className="absolute -bottom-1 left-3 right-3 h-3 rounded-full bg-black/15 blur-sm" />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </Link>
   );
 }
 
-// Metal shelf row
-function PantryShelf({ products, label }: { products: Product[]; label: string }) {
+// Metal retail shelf
+function RetailShelf({ products, label }: { products: Product[]; label: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -171,80 +224,122 @@ function PantryShelf({ products, label }: { products: Product[]; label: string }
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: direction === "left" ? -300 : 300, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: direction === "left" ? -280 : 280, behavior: "smooth" });
     }
   };
 
   return (
     <div className="relative">
       {/* Section label */}
-      <div className="flex items-center gap-3 mb-4">
-        <h3 className="text-lg font-semibold text-gray-800 px-4 py-1.5 bg-orange-100 rounded-full border border-orange-300 flex items-center gap-2">
-          <Package className="w-4 h-4 text-orange-600" />
-          {label}
-        </h3>
-        <div className="h-px flex-1 bg-gradient-to-r from-orange-300 to-transparent" />
+      <div className="flex items-center gap-4 mb-5">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-100 to-amber-50 rounded-full border-2 border-orange-300 shadow-lg"
+        >
+          <Package className="w-5 h-5 text-orange-600" />
+          <h3 className="text-lg font-bold text-orange-900">{label}</h3>
+        </motion.div>
+        <div className="h-1 flex-1 bg-gradient-to-r from-orange-400/40 to-transparent rounded-full" />
       </div>
 
       {/* Metal shelving unit */}
       <div className="relative">
-        {/* Back panel */}
-        <div className="absolute inset-0 rounded-lg bg-gradient-to-b from-gray-200 to-gray-300" style={{ transform: "translateZ(-20px)" }} />
+        {/* Back panel (pegboard style) */}
+        <div 
+          className="absolute inset-0 rounded-lg"
+          style={{
+            background: "linear-gradient(180deg, #F3F4F6 0%, #E5E7EB 100%)",
+            transform: "translateZ(-20px)",
+          }}
+        />
 
-        {/* Metal shelf */}
-        <div className="relative rounded-lg overflow-hidden shadow-xl border border-gray-300">
-          {/* Top metal bar */}
-          <div className="h-3 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-400 border-b border-gray-500" />
-          
-          {/* Shelf surface */}
-          <div className="relative bg-gradient-to-b from-gray-100 to-white p-4">
-            {/* Pegboard pattern */}
-            <div className="absolute inset-0 opacity-10" style={{
-              backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
-              backgroundSize: "20px 20px",
-            }} />
+        {/* Shelf structure */}
+        <div 
+          className="relative rounded-xl overflow-hidden"
+          style={{
+            boxShadow: "0 20px 40px -10px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.8)",
+          }}
+        >
+          {/* Top metal rail */}
+          <div className="h-4 bg-gradient-to-b from-slate-400 via-slate-300 to-slate-400 flex items-center px-4 border-b border-slate-500">
+            <div className="flex-1 h-1 bg-gradient-to-r from-slate-500 via-slate-300 to-slate-500 rounded-full" />
+          </div>
 
-            {/* Price rail */}
-            <div className="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-b from-transparent to-orange-100 border-t border-orange-200" />
+          {/* Main shelf area */}
+          <div 
+            className="relative bg-gradient-to-b from-gray-100 via-white to-gray-100"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 1px 1px, #d1d5db 1px, transparent 0)
+              `,
+              backgroundSize: "24px 24px",
+            }}
+          >
+            {/* Price tag strip */}
+            <div className="absolute bottom-0 inset-x-0 h-8 bg-gradient-to-b from-transparent via-orange-50/50 to-orange-100/80 border-t border-orange-200/50 z-10" />
 
-            <div className="relative">
+            {/* Products container */}
+            <div className="relative py-5 px-2">
               <AnimatePresence>
                 {canScrollLeft && (
-                  <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => scroll("left")}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-lg border-2 border-orange-300 flex items-center justify-center hover:bg-orange-50">
+                  <motion.button 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }} 
+                    onClick={() => scroll("left")}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white shadow-xl border-2 border-orange-400 flex items-center justify-center hover:bg-orange-50 transition-colors"
+                  >
                     <ChevronLeft className="w-5 h-5 text-orange-600" />
                   </motion.button>
                 )}
               </AnimatePresence>
 
-              <div ref={scrollRef} onScroll={checkScroll} className="flex gap-4 overflow-x-auto px-2 py-2 scrollbar-hide scroll-smooth" style={{ scrollbarWidth: "none" }}>
-                {products.map((product, idx) => <PantryProduct key={product.id} product={product} index={idx} />)}
+              <div 
+                ref={scrollRef} 
+                onScroll={checkScroll} 
+                className="flex gap-4 overflow-x-auto px-4 py-3 scrollbar-hide scroll-smooth"
+                style={{ scrollbarWidth: "none" }}
+              >
+                {products.map((product, idx) => (
+                  <PantryPackage key={product.id} product={product} index={idx} />
+                ))}
               </div>
 
               <AnimatePresence>
-                {canScrollRight && products.length > 4 && (
-                  <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => scroll("right")}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white shadow-lg border-2 border-orange-300 flex items-center justify-center hover:bg-orange-50">
+                {canScrollRight && products.length > 5 && (
+                  <motion.button 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    exit={{ opacity: 0 }} 
+                    onClick={() => scroll("right")}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white shadow-xl border-2 border-orange-400 flex items-center justify-center hover:bg-orange-50 transition-colors"
+                  >
                     <ChevronRight className="w-5 h-5 text-orange-600" />
                   </motion.button>
                 )}
               </AnimatePresence>
 
-              {canScrollLeft && <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent pointer-events-none z-10" />}
-              {canScrollRight && products.length > 4 && <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />}
+              {/* Scroll fade */}
+              {canScrollLeft && (
+                <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-gray-100 to-transparent pointer-events-none z-10" />
+              )}
+              {canScrollRight && products.length > 5 && (
+                <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-gray-100 to-transparent pointer-events-none z-10" />
+              )}
             </div>
           </div>
 
-          {/* Bottom metal bar */}
-          <div className="h-3 bg-gradient-to-t from-gray-400 via-gray-300 to-gray-400 border-t border-gray-200" />
+          {/* Bottom metal rail */}
+          <div className="h-4 bg-gradient-to-t from-slate-500 via-slate-400 to-slate-300 border-t border-slate-300" />
         </div>
 
-        {/* Shelf supports */}
-        <div className="flex justify-between px-4 -mt-1">
-          <div className="w-3 h-4 bg-gradient-to-b from-gray-400 to-gray-500 rounded-b" />
-          <div className="w-3 h-4 bg-gradient-to-b from-gray-400 to-gray-500 rounded-b" />
-          <div className="w-3 h-4 bg-gradient-to-b from-gray-400 to-gray-500 rounded-b" />
-          <div className="w-3 h-4 bg-gradient-to-b from-gray-400 to-gray-500 rounded-b" />
+        {/* Shelf brackets/supports */}
+        <div className="flex justify-between px-8 mt-1">
+          <div className="w-4 h-6 bg-gradient-to-b from-slate-400 to-slate-600 rounded-b" />
+          <div className="w-4 h-6 bg-gradient-to-b from-slate-400 to-slate-600 rounded-b" />
+          <div className="w-4 h-6 bg-gradient-to-b from-slate-400 to-slate-600 rounded-b" />
+          <div className="w-4 h-6 bg-gradient-to-b from-slate-400 to-slate-600 rounded-b" />
         </div>
       </div>
     </div>
@@ -261,58 +356,59 @@ export function RealisticPantryAisle({ products }: RealisticPantryAisleProps) {
 
   return (
     <div className="relative min-h-screen py-8">
-      {/* Warm store background */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-orange-50 via-amber-50/50 to-yellow-50" />
-
-      {/* Subtle pattern */}
-      <div className="fixed inset-0 -z-10 opacity-5" style={{
-        backgroundImage: `radial-gradient(circle at 2px 2px, #f97316 1px, transparent 0)`,
-        backgroundSize: "40px 40px",
+      {/* Store interior background */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-orange-50 via-amber-50/50 to-white" />
+      
+      {/* Store lighting effect */}
+      <div className="fixed inset-0 -z-10" style={{
+        backgroundImage: `
+          radial-gradient(ellipse at 25% 0%, rgba(251, 191, 36, 0.15) 0%, transparent 50%),
+          radial-gradient(ellipse at 75% 0%, rgba(251, 191, 36, 0.15) 0%, transparent 50%)
+        `,
       }} />
 
-      {/* Floating sparkles */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: -1 }}>
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute text-orange-300/30"
-            initial={{ x: `${Math.random() * 100}%`, y: -20 }}
-            animate={{ y: "100vh", rotate: 360 }}
-            transition={{ duration: 25 + Math.random() * 10, repeat: Infinity, delay: Math.random() * 5, ease: "linear" }}
-          >
-            <Sparkles className="w-5 h-5" />
-          </motion.div>
-        ))}
-      </div>
+      {/* Floor tile pattern */}
+      <div className="fixed inset-0 -z-10 opacity-5" style={{
+        backgroundImage: `
+          repeating-linear-gradient(0deg, transparent 0px, transparent 40px, #374151 40px, #374151 41px),
+          repeating-linear-gradient(90deg, transparent 0px, transparent 40px, #374151 40px, #374151 41px)
+        `,
+      }} />
 
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="container mx-auto px-4 max-w-5xl">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 rounded-full mb-4 border border-orange-300">
-            <Package className="w-4 h-4 text-orange-600" />
-            <span className="text-sm font-medium text-orange-800">South Asian Essentials • NeoMart</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 font-display">
+          <motion.div 
+            animate={{ y: [0, -3, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-orange-100 via-amber-50 to-orange-100 rounded-full mb-6 border-2 border-orange-300 shadow-xl"
+          >
+            <Store className="w-5 h-5 text-orange-600" />
+            <span className="text-sm font-bold text-orange-800 tracking-wide">SOUTH ASIAN ESSENTIALS</span>
+            <Package className="w-5 h-5 text-orange-600" />
+          </motion.div>
+          
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-800 font-display mb-3">
             Pantry Staples
           </h2>
-          <p className="text-gray-600 mt-2">Authentic ingredients • Scroll shelves to browse</p>
+          <p className="text-gray-600 text-lg">Authentic ingredients • Premium quality • Scroll shelves to browse</p>
         </motion.div>
 
-        {/* Pantry sections */}
-        <div className="space-y-10">
+        {/* Retail shelves */}
+        <div className="space-y-12">
           {Object.entries(productsBySection).map(([section, sectionProducts], idx) => (
             <motion.div
               key={section}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: idx * 0.1 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: idx * 0.1, duration: 0.5 }}
             >
-              <PantryShelf products={sectionProducts} label={section} />
+              <RetailShelf products={sectionProducts} label={section} />
             </motion.div>
           ))}
         </div>
@@ -321,10 +417,14 @@ export function RealisticPantryAisle({ products }: RealisticPantryAisleProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="text-center mt-12 text-orange-600 text-sm"
+          transition={{ delay: 1.2 }}
+          className="text-center mt-14"
         >
-          <p>🌶️ Authentic Indian groceries • Quality guaranteed</p>
+          <div className="inline-flex items-center gap-3 px-6 py-3 bg-orange-100 rounded-full border border-orange-300 shadow-md">
+            <span className="text-2xl">🌶️</span>
+            <span className="text-sm font-medium text-orange-800">Authentic Indian groceries • Quality guaranteed</span>
+            <span className="text-2xl">🍚</span>
+          </div>
         </motion.div>
       </div>
     </div>
